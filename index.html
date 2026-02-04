@@ -17,7 +17,33 @@
   <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#0f172a">
   <style>
-    /* Custom styles if any */
+    .img-zoom-container {
+      cursor: zoom-in;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .img-zoom-container.zoomed {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 50;
+      background: rgba(15, 23, 42, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      cursor: zoom-out;
+      border-radius: 0;
+    }
+
+    .img-zoom-container.zoomed img {
+      max-height: 90vh;
+      width: auto;
+      object-fit: contain;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
   </style>
 </head>
 
@@ -51,8 +77,8 @@
           </p>
         </div>
       </div>
-      <div class="rounded-2xl overflow-hidden shadow-2xl">
-        <img src="img/Screenshot from 2026-02-03 21-49-08.png" alt="Financial Growth Visualization" class="w-full h-auto object-cover">
+      <div id="intro-image-container" class="rounded-2xl overflow-hidden shadow-2xl img-zoom-container">
+        <img src="img/Screenshot from 2026-02-03 21-49-08.png" alt="Financial Growth Visualization" class="w-full h-auto object-cover transition-transform duration-500">
       </div>
     </section>
 
@@ -108,9 +134,9 @@
                 <p class="text-[10px] text-slate-400 mt-1">Total out-of-pocket savings</p>
               </div>
               <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100">
-                <p class="text-indigo-600 text-xs font-semibold mb-1 uppercase">HYSA Total Value</p>
+                <p class="text-indigo-600 text-xs font-semibold mb-1 uppercase">Total Earned</p>
                 <p id="hysaStatGain" class="text-xl font-bold text-indigo-900">$0</p>
-                <p class="text-[10px] text-indigo-400 mt-1">Final balance in HYSA</p>
+                <p class="text-[10px] text-indigo-400 mt-1">Total interest earned in HYSA</p>
               </div>
               <div class="p-4 bg-rose-50 rounded-xl border border-rose-100">
                 <p class="text-rose-600 text-xs font-semibold mb-1 uppercase">Normal Bank Total</p>
@@ -133,7 +159,7 @@
                 <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Contributed</th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">HYSA (Preferred)</th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Normal Bank</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Difference</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Total Earned</th>
               </tr>
             </thead>
             <tbody id="hysaTableBody" class="bg-white divide-y divide-slate-200"></tbody>
@@ -184,9 +210,9 @@
                 <p class="text-[10px] text-slate-400 mt-1">Total invested capital</p>
               </div>
               <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-100">
-                <p class="text-emerald-600 text-xs font-semibold mb-1 uppercase">Investment Gain (Above Contrib.)</p>
+                <p class="text-emerald-600 text-xs font-semibold mb-1 uppercase">Total Earned</p>
                 <p id="roboStatGain" class="text-xl font-bold text-emerald-900">$0</p>
-                <p class="text-[10px] text-emerald-400 mt-1">Net profit after contributions</p>
+                <p class="text-[10px] text-emerald-400 mt-1">Total investment growth over 20 years</p>
               </div>
               <div class="p-4 bg-rose-50 rounded-xl border border-rose-100">
                 <p class="text-rose-600 text-xs font-semibold mb-1 uppercase">Real Purchasing Power</p>
@@ -209,7 +235,7 @@
                 <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Contributed</th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Investment (Preferred)</th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Real Value (Inflation)</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Difference</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Total Earned</th>
               </tr>
             </thead>
             <tbody id="roboTableBody" class="bg-white divide-y divide-slate-200"></tbody>

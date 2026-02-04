@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <td class="px-4 py-2 whitespace-nowrap text-sm text-slate-600">${formatCurrency(totalContributed)}</td>
                             <td class="px-4 py-2 whitespace-nowrap text-sm font-bold text-indigo-600">${formatCurrency(currentHysa)}</td>
                             <td class="px-4 py-2 whitespace-nowrap text-sm text-rose-600">${formatCurrency(currentBank)}</td>
-                            <td class="px-4 py-2 whitespace-nowrap text-sm font-semibold text-emerald-500">${formatCurrency(currentHysa - currentBank)}</td>
+                            <td class="px-4 py-2 whitespace-nowrap text-sm font-semibold text-emerald-500">${formatCurrency(currentHysa - totalContributed)}</td>
                         </tr>
                     `;
                     hysaTableBody.insertAdjacentHTML('beforeend', row);
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-slate-600">${formatCurrency(totalContributed)}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-indigo-600">${formatCurrency(currentHysa)}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-rose-600">${formatCurrency(currentBank)}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold text-emerald-500">${formatCurrency(currentHysa - currentBank)}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold text-emerald-500">${formatCurrency(currentHysa - totalContributed)}</td>
                     </tr>
                 `;
                 hysaTableBody.insertAdjacentHTML('beforeend', row);
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         hysaStats.totalContributed.textContent = formatCurrency(totalContributed);
-        hysaStats.gain.textContent = formatCurrency(currentHysa);
+        hysaStats.gain.textContent = formatCurrency(currentHysa - totalContributed);
         hysaStats.bankTotal.textContent = formatCurrency(currentBank);
 
         updateChart('hysaChart', labels, hysaData, contribData, bankData, 'HYSA (Preferred)', 'Total Contributed', 'Normal Bank', '#4f46e5', '#94a3b8', '#f43f5e', 'hysa');
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td class="px-4 py-3 whitespace-nowrap text-sm text-slate-600">${formatCurrency(totalContributed)}</td>
                     <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-emerald-600">${formatCurrency(currentRobo)}</td>
                     <td class="px-4 py-3 whitespace-nowrap text-sm text-rose-600">${formatCurrency(currentInflationValue)}</td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold text-emerald-500">${formatCurrency(currentRobo - currentInflationValue)}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold text-emerald-500">${formatCurrency(currentRobo - totalContributed)}</td>
                 </tr>
             `;
             roboTableBody.insertAdjacentHTML('beforeend', row);
@@ -238,4 +238,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial run
     runHysa();
     runRobo();
+
+    // Image Zoom Logic
+    const introImageContainer = document.getElementById('intro-image-container');
+    if (introImageContainer) {
+        introImageContainer.addEventListener('click', (e) => {
+            introImageContainer.classList.toggle('zoomed');
+
+            // Prevent scrolling when zoomed
+            if (introImageContainer.classList.contains('zoomed')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close when clicking escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && introImageContainer.classList.contains('zoomed')) {
+                introImageContainer.classList.remove('zoomed');
+                document.body.style.overflow = '';
+            }
+        });
+    }
 });
