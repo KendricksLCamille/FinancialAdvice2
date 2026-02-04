@@ -1,0 +1,241 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WealthGrow | Financial Investing Insights</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="description" content="Learn about high yield saving accounts and robo-trading for long term benefits.">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#0f172a">
+  <style>
+    /* Custom styles if any */
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900 font-sans leading-relaxed">
+
+  <header class="bg-slate-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl md:text-6xl font-bold mb-4">Master Your Financial Future</h1>
+      <p class="text-xl text-slate-300 max-w-2xl">Discover the long-term benefits of High-Yield Savings Accounts and Robo-Trading to build sustainable wealth.</p>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-12 space-y-24">
+
+    <!-- Intro Section -->
+    <section id="intro" class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-3xl font-bold mb-6 text-slate-800">The Power of Smart Investing</h2>
+        <div class="space-y-4 text-lg text-slate-600">
+          <p>
+            Financial investing is the cornerstone of long-term wealth creation. Two of the most accessible and effective tools for modern investors are <strong>High-Yield Savings Accounts (HYSA)</strong> and <strong>Robo-Trading</strong>.
+          </p>
+          <p>
+            <strong>HYSA:</strong> Unlike traditional savings accounts that offer near-zero interest, HYSAs provide significantly higher returns, allowing your emergency fund or short-term savings to grow against inflation while remaining liquid and safe.
+          </p>
+          <p>
+            <strong>Robo-Trading:</strong> Using sophisticated algorithms to manage diversified portfolios, robo-advisors take the emotion out of investing. They offer automated rebalancing and tax-loss harvesting, making professional-grade investment strategies available to everyone.
+          </p>
+          <p class="font-semibold text-slate-800 italic">
+            Combined, these tools create a balanced financial strategy: safety and liquidity with HYSA, and long-term growth through automated market exposure.
+          </p>
+        </div>
+      </div>
+      <div class="rounded-2xl overflow-hidden shadow-2xl">
+        <img src="img/Screenshot from 2026-02-03 21-49-08.png" alt="Financial Growth Visualization" class="w-full h-auto object-cover">
+      </div>
+    </section>
+
+    <!-- Calculator Sections -->
+    <div class="space-y-24">
+
+      <!-- HYSA Section -->
+      <section id="hysa-section" class="bg-white rounded-3xl shadow-xl p-8 md:p-12">
+        <h2 class="text-3xl font-bold mb-8 text-center text-slate-800">High-Yield Savings Growth</h2>
+
+        <div class="grid lg:grid-cols-3 gap-12">
+          <!-- Inputs -->
+          <div class="space-y-6">
+            <h3 class="text-xl font-semibold border-b pb-2">HYSA Strategy (APR)</h3>
+            <div>
+              <label class="block text-sm font-medium text-slate-700">Initial Amount ($)</label>
+              <input type="number" id="hysaStartAmount" value="10000" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700">Initial Annual Contribution ($/yr)</label>
+              <input type="number" id="hysaAnnualContrib" value="1200" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700">Annual Contribution Increase (%)</label>
+              <input type="number" id="hysaStepIncrease" value="3" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700">HYSA APR (%)</label>
+              <input type="number" id="hysaRate" value="4.5" step="0.1" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2 text-indigo-700 font-bold">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700">Normal Bank APR (%)</label>
+              <input type="number" id="hysaBankRate" value="0.5" step="0.1" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2 text-rose-700">
+            </div>
+            <div class="pt-4 border-t">
+              <label class="flex items-center space-x-3 cursor-pointer">
+                <input type="checkbox" id="hysaMonthlyView" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
+                <span class="text-sm font-medium text-slate-700">Show Monthly Projection</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Chart and Stats -->
+          <div class="lg:col-span-2 space-y-8">
+            <div class="mb-4">
+              <h4 class="text-lg font-semibold text-slate-800">Growth Summary</h4>
+              <p class="text-sm text-slate-500">Key performance metrics after 20 years of consistent saving.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                <p class="text-slate-600 text-xs font-semibold mb-1 uppercase">Total Contributed</p>
+                <p id="hysaStatTotalContributed" class="text-xl font-bold text-slate-900">$0</p>
+                <p class="text-[10px] text-slate-400 mt-1">Total out-of-pocket savings</p>
+              </div>
+              <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+                <p class="text-indigo-600 text-xs font-semibold mb-1 uppercase">HYSA Total Value</p>
+                <p id="hysaStatGain" class="text-xl font-bold text-indigo-900">$0</p>
+                <p class="text-[10px] text-indigo-400 mt-1">Final balance in HYSA</p>
+              </div>
+              <div class="p-4 bg-rose-50 rounded-xl border border-rose-100">
+                <p class="text-rose-600 text-xs font-semibold mb-1 uppercase">Normal Bank Total</p>
+                <p id="hysaStatBankTotal" class="text-xl font-bold text-rose-900">$0</p>
+                <p class="text-[10px] text-rose-400 mt-1">Final balance in standard account</p>
+              </div>
+            </div>
+            <div class="h-96">
+              <canvas id="hysaChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-12 overflow-x-auto">
+          <h3 class="text-xl font-bold mb-4 text-slate-800">HYSA vs Normal Bank Projection</h3>
+          <table class="min-w-full divide-y divide-slate-200">
+            <thead class="bg-slate-50">
+              <tr>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Period</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Contributed</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">HYSA (Preferred)</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Normal Bank</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Difference</th>
+              </tr>
+            </thead>
+            <tbody id="hysaTableBody" class="bg-white divide-y divide-slate-200"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Robo-Investment Section -->
+      <section id="robo-section" class="bg-white rounded-3xl shadow-xl p-8 md:p-12">
+        <h2 class="text-3xl font-bold mb-8 text-center text-slate-800">Robo-Investment Growth</h2>
+
+        <div class="grid lg:grid-cols-3 gap-12">
+          <!-- Inputs -->
+          <div class="space-y-6">
+            <h3 class="text-xl font-semibold border-b pb-2">Robo Strategy (APY)</h3>
+            <div>
+              <label class="block text-sm font-medium text-slate-700">Initial Amount ($)</label>
+              <input type="number" id="roboStartAmount" value="10000" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 bg-slate-50 p-2">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700">Initial Annual Contribution ($/yr)</label>
+              <input type="number" id="roboAnnualContrib" value="1200" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 bg-slate-50 p-2">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700">Annual Contribution Increase (%)</label>
+              <input type="number" id="roboStepIncrease" value="3" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 bg-slate-50 p-2">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700">Investment APY (%)</label>
+              <input type="number" id="roboRate" value="7.0" step="0.1" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 bg-slate-50 p-2 text-emerald-700 font-bold">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700">Inflation Rate (%)</label>
+              <input type="number" id="roboInflationRate" value="2.5" step="0.1" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 bg-slate-50 p-2 text-rose-700">
+            </div>
+          </div>
+
+          <!-- Chart and Stats -->
+          <div class="lg:col-span-2 space-y-8">
+            <div class="mb-4">
+              <h4 class="text-lg font-semibold text-slate-800">Investment Summary</h4>
+              <p class="text-sm text-slate-500">How your purchasing power shifts over 20 years.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                <p class="text-slate-600 text-xs font-semibold mb-1 uppercase">Total Contributed</p>
+                <p id="roboStatTotalContributed" class="text-xl font-bold text-slate-900">$0</p>
+                <p class="text-[10px] text-slate-400 mt-1">Total invested capital</p>
+              </div>
+              <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                <p class="text-emerald-600 text-xs font-semibold mb-1 uppercase">Investment Gain (Above Contrib.)</p>
+                <p id="roboStatGain" class="text-xl font-bold text-emerald-900">$0</p>
+                <p class="text-[10px] text-emerald-400 mt-1">Net profit after contributions</p>
+              </div>
+              <div class="p-4 bg-rose-50 rounded-xl border border-rose-100">
+                <p class="text-rose-600 text-xs font-semibold mb-1 uppercase">Real Purchasing Power</p>
+                <p id="roboStatInflationTotal" class="text-xl font-bold text-rose-900">$0</p>
+                <p class="text-[10px] text-rose-400 mt-1">Value of contributions adjusted for inflation</p>
+              </div>
+            </div>
+            <div class="h-96">
+              <canvas id="roboChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-12 overflow-x-auto">
+          <h3 class="text-xl font-bold mb-4 text-slate-800">Investment vs Inflation Projection</h3>
+          <table class="min-w-full divide-y divide-slate-200">
+            <thead class="bg-slate-50">
+              <tr>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Year</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Contributed</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Investment (Preferred)</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Real Value (Inflation)</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Difference</th>
+              </tr>
+            </thead>
+            <tbody id="roboTableBody" class="bg-white divide-y divide-slate-200"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- Impressive Display Section -->
+    <section class="bg-indigo-900 rounded-3xl p-12 text-center text-white">
+      <h2 class="text-4xl font-extrabold mb-6">Financial Independence Starts Today</h2>
+      <p class="mt-4 text-lg text-indigo-100 max-w-3xl mx-auto">
+        By utilizing a High-Yield Savings Account and consistent investing, you're not just saving money; you're building a fortress against economic erosion.
+        Don't let inflation and low interest rates wash away your hard-earned wealth.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="bg-slate-900 text-slate-400 py-12 mt-24">
+    <div class="container mx-auto px-4 text-center">
+      <p>&copy; 2026 WealthGrow Financial Insights. For educational purposes only.</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>
