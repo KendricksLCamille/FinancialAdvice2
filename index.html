@@ -17,6 +17,48 @@
   <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#0f172a">
   <style>
+    /* Tooltip styles */
+    .tooltip-container {
+      position: relative;
+    }
+
+    .tooltip-content {
+      display: none;
+      position: absolute;
+      z-index: 50;
+      width: 200px;
+      padding: 0.75rem;
+      font-size: 0.75rem;
+      line-height: 1.25;
+      color: #ffffff;
+      background-color: #1e293b;
+      border-radius: 0.5rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 0.5rem;
+      pointer-events: none;
+    }
+
+    .tooltip-container:hover .tooltip-content,
+    .tooltip-container:focus-within .tooltip-content,
+    .tooltip-container.active .tooltip-content {
+      display: block;
+    }
+
+    /* Arrow for tooltip */
+    .tooltip-content::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px;
+      border-style: solid;
+      border-color: transparent transparent #1e293b transparent;
+    }
+
     .img-zoom-container {
       cursor: zoom-in;
       transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -52,7 +94,7 @@
   <header class="bg-slate-900 text-white py-12">
     <div class="container mx-auto px-4">
       <h1 class="text-4xl md:text-6xl font-bold mb-4">Master Your Financial Future</h1>
-      <p class="text-xl text-slate-300 max-w-2xl">Discover the long-term benefits of High-Yield Savings Accounts and Robo-Trading to build sustainable wealth.</p>
+      <p class="text-xl text-slate-300 max-w-2xl">Discover the long-term benefits of High-Yield Savings Accounts and Market Investing to build sustainable wealth.</p>
     </div>
   </header>
 
@@ -64,13 +106,13 @@
         <h2 class="text-3xl font-bold mb-6 text-slate-800">The Power of Smart Investing</h2>
         <div class="space-y-4 text-lg text-slate-600">
           <p>
-            Financial investing is the cornerstone of long-term wealth creation. Two of the most accessible and effective tools for modern investors are <strong>High-Yield Savings Accounts (HYSA)</strong> and <strong>Robo-Trading</strong>.
+            Financial investing is the cornerstone of long-term wealth creation. Two of the most accessible and effective tools for modern investors are <strong>High-Yield Savings Accounts (HYSA)</strong> and <strong>Market Investment</strong>.
           </p>
           <p>
             <strong>HYSA:</strong> Unlike traditional savings accounts that offer near-zero interest, HYSAs provide significantly higher returns, allowing your emergency fund or short-term savings to grow against inflation while remaining liquid and safe.
           </p>
           <p>
-            <strong>Robo-Trading:</strong> Using sophisticated algorithms to manage diversified portfolios, robo-advisors take the emotion out of investing. They offer automated rebalancing and tax-loss harvesting, making professional-grade investment strategies available to everyone.
+            <strong>Investment:</strong> Using sophisticated algorithms or diversified portfolios, automated investing takes the emotion out of the market. They offer automated rebalancing and tax-loss harvesting, making professional-grade investment strategies available to everyone.
           </p>
           <p class="font-semibold text-slate-800 italic">
             Combined, these tools create a balanced financial strategy: safety and liquidity with HYSA, and long-term growth through automated market exposure.
@@ -107,11 +149,11 @@
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700">HYSA APR (%)</label>
-              <input type="number" id="hysaRate" value="4.5" step="0.1" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2 text-indigo-700 font-bold">
+              <input type="number" id="hysaRate" value="2.5" step="0.1" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2 text-indigo-700 font-bold">
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700">Normal Bank APR (%)</label>
-              <input type="number" id="hysaBankRate" value="0.5" step="0.1" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2 text-rose-700">
+              <input type="number" id="hysaBankRate" value="0.6" step="0.1" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2 text-rose-700">
             </div>
             <div class="pt-4 border-t">
               <label class="flex items-center space-x-3 cursor-pointer">
@@ -128,20 +170,29 @@
               <p class="text-sm text-slate-500">Key performance metrics after 20 years of consistent saving.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 tooltip-container cursor-help" tabindex="0">
                 <p class="text-slate-600 text-xs font-semibold mb-1 uppercase">Total Contributed</p>
                 <p id="hysaStatTotalContributed" class="text-xl font-bold text-slate-900">$0</p>
                 <p class="text-[10px] text-slate-400 mt-1">Total out-of-pocket savings</p>
+                <div class="tooltip-content">
+                  The total amount of money you have personally put into the account.
+                </div>
               </div>
-              <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+              <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100 tooltip-container cursor-help" tabindex="0">
                 <p class="text-indigo-600 text-xs font-semibold mb-1 uppercase">Total Earned</p>
                 <p id="hysaStatGain" class="text-xl font-bold text-indigo-900">$0</p>
                 <p class="text-[10px] text-indigo-400 mt-1">Total interest earned in HYSA</p>
+                <div class="tooltip-content">
+                  The total interest accumulated over the 20-year period.
+                </div>
               </div>
-              <div class="p-4 bg-rose-50 rounded-xl border border-rose-100">
+              <div class="p-4 bg-rose-50 rounded-xl border border-rose-100 tooltip-container cursor-help" tabindex="0">
                 <p class="text-rose-600 text-xs font-semibold mb-1 uppercase">Normal Bank Total</p>
                 <p id="hysaStatBankTotal" class="text-xl font-bold text-rose-900">$0</p>
                 <p class="text-[10px] text-rose-400 mt-1">Final balance in standard account</p>
+                <div class="tooltip-content">
+                  What your balance would be in a standard bank account with lower interest.
+                </div>
               </div>
             </div>
             <div class="h-96">
@@ -151,15 +202,40 @@
         </div>
 
         <div class="mt-12 overflow-x-auto">
-          <h3 class="text-xl font-bold mb-4 text-slate-800">HYSA vs Normal Bank Projection</h3>
+          <h3 class="text-xl font-bold mb-4 text-slate-800">HYSA Projection</h3>
           <table class="min-w-full divide-y divide-slate-200">
             <thead class="bg-slate-50">
               <tr>
-                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Period</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Contributed</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">HYSA (Preferred)</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Normal Bank</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Total Earned</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider tooltip-container cursor-help" tabindex="0">
+                  Period
+                  <div class="tooltip-content">
+                    Timeframe of the projection.
+                  </div>
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider tooltip-container cursor-help" tabindex="0">
+                  Contributed
+                  <div class="tooltip-content">
+                    Total out-of-pocket savings.
+                  </div>
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider tooltip-container cursor-help" tabindex="0">
+                  HYSA (Preferred)
+                  <div class="tooltip-content">
+                    Projected balance in a High-Yield Savings Account.
+                  </div>
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider tooltip-container cursor-help" tabindex="0">
+                  Normal Bank
+                  <div class="tooltip-content">
+                    Projected balance in a standard low-interest account.
+                  </div>
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider tooltip-container cursor-help" tabindex="0">
+                  Total Earned
+                  <div class="tooltip-content">
+                    Total interest earned in the HYSA account.
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody id="hysaTableBody" class="bg-white divide-y divide-slate-200"></tbody>
@@ -167,14 +243,14 @@
         </div>
       </section>
 
-      <!-- Robo-Investment Section -->
+      <!-- Investment Section -->
       <section id="robo-section" class="bg-white rounded-3xl shadow-xl p-8 md:p-12">
-        <h2 class="text-3xl font-bold mb-8 text-center text-slate-800">Robo-Investment Growth</h2>
+        <h2 class="text-3xl font-bold mb-8 text-center text-slate-800">Investment Growth</h2>
 
         <div class="grid lg:grid-cols-3 gap-12">
           <!-- Inputs -->
           <div class="space-y-6">
-            <h3 class="text-xl font-semibold border-b pb-2">Robo Strategy (APY)</h3>
+            <h3 class="text-xl font-semibold border-b pb-2">Investment Strategy (APY)</h3>
             <div>
               <label class="block text-sm font-medium text-slate-700">Initial Amount ($)</label>
               <input type="number" id="roboStartAmount" value="10000" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 bg-slate-50 p-2">
@@ -204,20 +280,29 @@
               <p class="text-sm text-slate-500">How your purchasing power shifts over 20 years.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 tooltip-container cursor-help" tabindex="0">
                 <p class="text-slate-600 text-xs font-semibold mb-1 uppercase">Total Contributed</p>
                 <p id="roboStatTotalContributed" class="text-xl font-bold text-slate-900">$0</p>
                 <p class="text-[10px] text-slate-400 mt-1">Total invested capital</p>
+                <div class="tooltip-content">
+                  Total amount of money contributed to the investment.
+                </div>
               </div>
-              <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+              <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-100 tooltip-container cursor-help" tabindex="0">
                 <p class="text-emerald-600 text-xs font-semibold mb-1 uppercase">Total Earned</p>
                 <p id="roboStatGain" class="text-xl font-bold text-emerald-900">$0</p>
                 <p class="text-[10px] text-emerald-400 mt-1">Total investment growth over 20 years</p>
+                <div class="tooltip-content">
+                  Total market gains achieved (Nominal Value - Contributed).
+                </div>
               </div>
-              <div class="p-4 bg-rose-50 rounded-xl border border-rose-100">
-                <p class="text-rose-600 text-xs font-semibold mb-1 uppercase">Real Purchasing Power</p>
+              <div class="p-4 bg-rose-50 rounded-xl border border-rose-100 tooltip-container cursor-help" tabindex="0">
+                <p class="text-rose-600 text-xs font-semibold mb-1 uppercase">Contributed (After Inflation)</p>
                 <p id="roboStatInflationTotal" class="text-xl font-bold text-rose-900">$0</p>
-                <p class="text-[10px] text-rose-400 mt-1">Value of contributions adjusted for inflation</p>
+                <p class="text-[10px] text-rose-400 mt-1">Value of contributions if not invested</p>
+                <div class="tooltip-content">
+                  What your total contributions would be worth in today's dollars if kept as cash.
+                </div>
               </div>
             </div>
             <div class="h-96">
@@ -227,15 +312,52 @@
         </div>
 
         <div class="mt-12 overflow-x-auto">
-          <h3 class="text-xl font-bold mb-4 text-slate-800">Investment vs Inflation Projection</h3>
+          <h3 class="text-xl font-bold mb-4 text-slate-800">Investment Projection</h3>
           <table class="min-w-full divide-y divide-slate-200">
             <thead class="bg-slate-50">
               <tr>
-                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Year</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Contributed</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Investment (Preferred)</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Real Value (Inflation)</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase">Total Earned</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider tooltip-container cursor-help" tabindex="0">
+                  Year
+                  <div class="tooltip-content">
+                    Years since initial investment.
+                  </div>
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider tooltip-container cursor-help" tabindex="0">
+                  Contributed
+                  <div class="tooltip-content">
+                    Total out-of-pocket money added to the account.
+                  </div>
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider tooltip-container cursor-help" tabindex="0">
+                  Investment (Value)
+                  <div class="tooltip-content">
+                    Market value of your portfolio (nominal dollars).
+                  </div>
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider tooltip-container cursor-help" tabindex="0">
+                  Total Earned
+                  <div class="tooltip-content">
+                    Total market gains (Nominal Investment - Total Contributed).
+                  </div>
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider tooltip-container cursor-help" tabindex="0">
+                  Contributed (After Inflation)
+                  <div class="tooltip-content">
+                    What your contributions would be worth if kept in cash, adjusted for inflation.
+                  </div>
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider tooltip-container cursor-help" tabindex="0">
+                  Investment (After Inflation)
+                  <div class="tooltip-content">
+                    Value of your investment portfolio in today's buying power.
+                  </div>
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider tooltip-container cursor-help" tabindex="0">
+                  Total Earned After Inflation
+                  <div class="tooltip-content">
+                    Total market gains in today's buying power.
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody id="roboTableBody" class="bg-white divide-y divide-slate-200"></tbody>

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hysaTableBody = document.getElementById('hysaTableBody');
     let hysaChart;
 
-    // Robo Elements
+    // Investment Elements
     const roboInputs = {
         start: document.getElementById('roboStartAmount'),
         contrib: document.getElementById('roboAnnualContrib'),
@@ -52,11 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const runHysa = () => {
-        const startAmount = parseFloat(hysaInputs.start.value) || 0;
-        let annualContrib = parseFloat(hysaInputs.contrib.value) || 0;
-        const step = (parseFloat(hysaInputs.step.value) || 0) / 100;
-        const rateAPR = (parseFloat(hysaInputs.rate.value) || 0) / 100;
-        const bankRateAPR = (parseFloat(hysaInputs.bankRate.value) || 0) / 100;
+        const startAmount = Number.parseFloat(hysaInputs.start.value) || 0;
+        let annualContrib = Number.parseFloat(hysaInputs.contrib.value) || 0;
+        const step = (Number.parseFloat(hysaInputs.step.value) || 0) / 100;
+        const rateAPR = (Number.parseFloat(hysaInputs.rate.value) || 0) / 100;
+        const bankRateAPR = (Number.parseFloat(hysaInputs.bankRate.value) || 0) / 100;
         const showMonthly = hysaInputs.monthlyView.checked;
 
         const labels = [];
@@ -69,6 +69,22 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentHysa = startAmount;
         let currentBank = startAmount;
         let totalContributed = startAmount;
+
+        labels.push(showMonthly ? 'Y0 M0' : 'Year 0');
+        hysaData.push(currentHysa.toFixed(2));
+        bankData.push(currentBank.toFixed(2));
+        contribData.push(totalContributed.toFixed(2));
+
+        const initialRow = `
+            <tr class="bg-slate-50 font-semibold">
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-slate-500">0</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-slate-600">${formatCurrency(totalContributed)}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-indigo-600">${formatCurrency(currentHysa)}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-rose-600">${formatCurrency(currentBank)}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold text-indigo-500">${formatCurrency(0)}</td>
+            </tr>
+        `;
+        hysaTableBody.insertAdjacentHTML('beforeend', initialRow);
 
         const monthlyRate = rateAPR / 12;
         const monthlyBankRate = bankRateAPR / 12;
@@ -94,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <td class="px-4 py-2 whitespace-nowrap text-sm text-slate-600">${formatCurrency(totalContributed)}</td>
                             <td class="px-4 py-2 whitespace-nowrap text-sm font-bold text-indigo-600">${formatCurrency(currentHysa)}</td>
                             <td class="px-4 py-2 whitespace-nowrap text-sm text-rose-600">${formatCurrency(currentBank)}</td>
-                            <td class="px-4 py-2 whitespace-nowrap text-sm font-semibold text-emerald-500">${formatCurrency(currentHysa - totalContributed)}</td>
+                            <td class="px-4 py-2 whitespace-nowrap text-sm font-semibold text-indigo-500">${formatCurrency(currentHysa - totalContributed)}</td>
                         </tr>
                     `;
                     hysaTableBody.insertAdjacentHTML('beforeend', row);
@@ -113,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-slate-600">${formatCurrency(totalContributed)}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-indigo-600">${formatCurrency(currentHysa)}</td>
                         <td class="px-4 py-3 whitespace-nowrap text-sm text-rose-600">${formatCurrency(currentBank)}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold text-emerald-500">${formatCurrency(currentHysa - totalContributed)}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold text-indigo-500">${formatCurrency(currentHysa - totalContributed)}</td>
                     </tr>
                 `;
                 hysaTableBody.insertAdjacentHTML('beforeend', row);
@@ -129,53 +145,130 @@ document.addEventListener('DOMContentLoaded', () => {
         updateChart('hysaChart', labels, hysaData, contribData, bankData, 'HYSA (Preferred)', 'Total Contributed', 'Normal Bank', '#4f46e5', '#94a3b8', '#f43f5e', 'hysa');
     };
 
-    const runRobo = () => {
-        const startAmount = parseFloat(roboInputs.start.value) || 0;
-        let annualContrib = parseFloat(roboInputs.contrib.value) || 0;
-        const step = (parseFloat(roboInputs.step.value) || 0) / 100;
-        const rateAPY = (parseFloat(roboInputs.rate.value) || 0) / 100;
-        const inflationRate = (parseFloat(roboInputs.inflation.value) || 0) / 100;
+
+    const runInvestment = () => {
+        const startAmount = Number.parseFloat(roboInputs.start.value) || 0;
+        let annualContrib = Number.parseFloat(roboInputs.contrib.value) || 0;
+        const step = (Number.parseFloat(roboInputs.step.value) || 0) / 100;
+        const rateAPR = (Number.parseFloat(roboInputs.rate.value) || 0) / 100;
+        const inflationRate = (Number.parseFloat(roboInputs.inflation.value) || 0) / 100;
 
         const labels = [];
-        const roboData = [];
-        const inflationData = [];
+        const investedData = [];
+        const realInvestedData = [];
+        const realContribData = [];
         const contribData = [];
 
         roboTableBody.innerHTML = '';
 
-        let currentRobo = startAmount;
-        let currentInflationValue = startAmount;
+        let currentInvested = startAmount;
         let totalContributed = startAmount;
+        let inflationFactor = 1;
 
+        labels.push('Year 0');
+        investedData.push(currentInvested.toFixed(2));
+        realInvestedData.push(currentInvested.toFixed(2));
+        realContribData.push(totalContributed.toFixed(2));
+        contribData.push(totalContributed.toFixed(2));
+
+        const initialRow = `
+            <tr class="bg-slate-50 font-semibold">
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-slate-500">0</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-slate-600">${formatCurrency(totalContributed)}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-emerald-600">${formatCurrency(currentInvested)}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold text-emerald-500">${formatCurrency(0)}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-rose-600">${formatCurrency(totalContributed)}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-indigo-600">${formatCurrency(currentInvested)}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold text-indigo-500">${formatCurrency(0)}</td>
+            </tr>
+        `;
+        roboTableBody.insertAdjacentHTML('beforeend', initialRow);
+
+        currentInvested *= (1 + rateAPR);
         for (let year = 1; year <= 20; year++) {
-            currentRobo = (currentRobo + annualContrib) * (1 + rateAPY);
-            currentInflationValue = (currentInflationValue + annualContrib) * (1 - inflationRate);
+            currentInvested = (currentInvested + annualContrib)
             totalContributed += annualContrib;
+            inflationFactor *= (1 + inflationRate);
+
+            const realInvested = currentInvested / inflationFactor;
+            const realContrib = totalContributed / inflationFactor;
 
             labels.push(`Year ${year}`);
-            roboData.push(currentRobo.toFixed(2));
-            inflationData.push(currentInflationValue.toFixed(2));
+            investedData.push(currentInvested.toFixed(2));
+            realInvestedData.push(realInvested.toFixed(2));
+            realContribData.push(realContrib.toFixed(2));
             contribData.push(totalContributed.toFixed(2));
 
             const row = `
                 <tr>
                     <td class="px-4 py-3 whitespace-nowrap text-sm text-slate-500">${year}</td>
                     <td class="px-4 py-3 whitespace-nowrap text-sm text-slate-600">${formatCurrency(totalContributed)}</td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-emerald-600">${formatCurrency(currentRobo)}</td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm text-rose-600">${formatCurrency(currentInflationValue)}</td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold text-emerald-500">${formatCurrency(currentRobo - totalContributed)}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-emerald-600">${formatCurrency(currentInvested)}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold text-emerald-500">${formatCurrency(currentInvested - totalContributed)}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-rose-600">${formatCurrency(realContrib)}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-indigo-600">${formatCurrency(realInvested)}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold text-indigo-500">${formatCurrency(realInvested - realContrib)}</td>
                 </tr>
             `;
             roboTableBody.insertAdjacentHTML('beforeend', row);
 
+            currentInvested *= (1 + rateAPR);
             annualContrib *= (1 + step);
         }
 
         roboStats.totalContributed.textContent = formatCurrency(totalContributed);
-        roboStats.gain.textContent = formatCurrency(currentRobo - totalContributed);
-        roboStats.inflationTotal.textContent = formatCurrency(currentInflationValue);
+        roboStats.gain.textContent = formatCurrency(currentInvested - totalContributed);
+        roboStats.inflationTotal.textContent = formatCurrency(totalContributed / inflationFactor);
 
-        updateChart('roboChart', labels, roboData, contribData, inflationData, 'Investment (Preferred)', 'Total Contributed', 'Real Value (Inflation)', '#10b981', '#94a3b8', '#f43f5e', 'robo');
+        updateInvestmentChart(labels, investedData, realInvestedData, realContribData, contribData);
+    };
+
+    const updateInvestmentChart = (labels, roboData, realPortfolioData, realContribData, contribData) => {
+        const ctx = document.getElementById('roboChart').getContext('2d');
+        if (roboChart) roboChart.destroy();
+
+        roboChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Investment (Value)',
+                        data: roboData,
+                        borderColor: '#10b981',
+                        backgroundColor: '#10b9811A',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Investment (After Inflation)',
+                        data: realPortfolioData,
+                        borderColor: '#4f46e5',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Contributed (After Inflation)',
+                        data: realContribData,
+                        borderColor: '#f43f5e',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        fill: false,
+                        tension: 0
+                    },
+                    {
+                        label: 'Contributed',
+                        data: contribData,
+                        borderColor: '#94a3b8',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0
+                    }
+                ]
+            },
+            options: commonOptions
+        });
     };
 
     const updateChart = (chartId, labels, pref, contrib, other, prefLabel, contribLabel, otherLabel, prefColor, contribColor, otherColor, type) => {
@@ -233,11 +326,11 @@ document.addEventListener('DOMContentLoaded', () => {
     Object.values(hysaInputs).forEach(input => {
         input.addEventListener(input.type === 'checkbox' ? 'change' : 'input', runHysa);
     });
-    Object.values(roboInputs).forEach(input => input.addEventListener('input', runRobo));
+    Object.values(roboInputs).forEach(input => input.addEventListener('input', runInvestment));
 
     // Initial run
     runHysa();
-    runRobo();
+    runInvestment();
 
     // Image Zoom Logic
     const introImageContainer = document.getElementById('intro-image-container');
@@ -261,4 +354,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Tooltip Mobile Support
+    document.querySelectorAll('.tooltip-container').forEach(container => {
+        container.addEventListener('click', (e) => {
+            // Toggle active class for mobile/touch
+            const wasActive = container.classList.contains('active');
+
+            // Close all others
+            document.querySelectorAll('.tooltip-container').forEach(c => c.classList.remove('active'));
+
+            if (!wasActive) {
+                container.classList.add('active');
+            }
+
+            // Prevent event bubbling if it's a click that should only trigger the tooltip
+            if (window.innerWidth < 768) {
+                e.stopPropagation();
+            }
+        });
+    });
+
+    // Close tooltips when clicking outside
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.tooltip-container').forEach(c => c.classList.remove('active'));
+    });
 });
