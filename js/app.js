@@ -185,13 +185,16 @@ document.addEventListener('DOMContentLoaded', () => {
         roboTableBody.insertAdjacentHTML('beforeend', initialRow);
 
         currentInvested *= (1 + rateAPR);
+        let realInvested = currentInvested;
+        let realContrib = totalContributed;
+
         for (let year = 1; year <= 20; year++) {
             currentInvested = (currentInvested + annualContrib)
             totalContributed += annualContrib;
             inflationFactor *= (1 + inflationRate);
 
-            const realInvested = currentInvested / inflationFactor;
-            const realContrib = totalContributed / inflationFactor;
+            realInvested = currentInvested / inflationFactor;
+            realContrib = totalContributed / inflationFactor;
 
             labels.push(`Year ${year}`);
             investedData.push(currentInvested.toFixed(2));
@@ -217,8 +220,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         roboStats.totalContributed.textContent = formatCurrency(totalContributed);
-        roboStats.gain.textContent = formatCurrency(currentInvested - totalContributed);
-        roboStats.inflationTotal.textContent = formatCurrency(totalContributed / inflationFactor);
+        roboStats.gain.textContent = formatCurrency(realInvested - realContrib);
+        roboStats.inflationTotal.textContent = formatCurrency(realContrib);
 
         updateInvestmentChart(labels, investedData, realInvestedData, realContribData, contribData);
     };
